@@ -63,6 +63,7 @@ class Js extends Controller implements Controller_Interface
             'url',
             'env',
             'file',
+            'regex',
             'http',
             'cache',
             'client',
@@ -611,7 +612,7 @@ class Js extends Controller implements Controller_Interface
                 if (isset($script['replaceSrc'])) {
 
                     // replace src in tag
-                    $this->output->add_search_replace($script['tag'], $this->attr_regex('src', $script['tag'], $script['src']));
+                    $this->output->add_search_replace($script['tag'], $this->regex->attr('src', $script['tag'], $script['src']));
                 }
             }
         }
@@ -1247,7 +1248,7 @@ class Js extends Controller implements Controller_Interface
                 // verify type
                 $type = strpos($attributes, 'type');
                 if ($type !== false) {
-                    $type = $this->attr_regex('type', $attributes);
+                    $type = $this->regex->attr('type', $attributes);
                     if ($type) {
                         $type = trim(strtolower($type));
                         if (strpos($type, 'application/javascript') !== false || strpos($type, 'text/javascript') !== false) {
@@ -1263,7 +1264,7 @@ class Js extends Controller implements Controller_Interface
                 $src = strpos($attributes, 'src');
                 if ($src !== false) {
                     // extract src using regular expression
-                    $src = $this->attr_regex('src', $attributes);
+                    $src = $this->regex->attr('src', $attributes);
                     if (!$src) {
                         continue 1;
                     }
@@ -1863,50 +1864,6 @@ class Js extends Controller implements Controller_Interface
         }
 
         return $basename;
-    }
-
-    /**
-     * Extract attribute from tag
-     *
-     * @param  string $attributes HTML tag attributes
-     * @param  string $replace    src value to replace
-     * @return string src or modified tag
-     */
-    final private function attr_regex($param, $attributes, $replace = false)
-    {
-        // detect if tag has src
-        $srcpos = strpos($attributes, $param);
-        if ($srcpos !== false) {
-            $param_quote = preg_quote($param);
-
-            // regex
-            $char = substr($attributes, ($srcpos + 4), 1);
-            if ($char === '"' || $char === '\'') {
-                $char = preg_quote($char);
-                $regex = '#('.$param_quote.'\s*=\s*'.$char.')([^'.$char.']+)('.$char.')#Usmi';
-            } elseif ($char === ' ' || $char === "\n") {
-                $regex = '#('.$param_quote.'\s*=\s*["|\'])([^"|\']+)(["|\'])#Usmi';
-            } else {
-                $attributes .= '>';
-                $regex = '#('.$param_quote.'\s*=)([^\s>]+)(\s|>)#Usmi';
-            }
-
-            // return param
-            if (!$replace) {
-
-                // match param
-                if (!preg_match($regex, $attributes, $out)) {
-                    return false;
-                }
-
-                return ($out[2]) ? $this->url->translate_protocol($out[2]) : $out[2];
-            }
-
-            // replace param in tag
-            $attributes = preg_replace($regex, '$1' . $replace . '$3', $attributes);
-        }
-
-        return ($replace) ? $attributes : false;
     }
 
     /**
