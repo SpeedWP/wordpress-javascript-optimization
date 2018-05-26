@@ -3,6 +3,9 @@
 This is an archive of older and core update changelog entries. Most recent plugin update entries are maintained in readme.txt
 
 
+Bugfix: PHP notice errors.
+
+
 
 = 0.0.39 =
 * Core update (see changelog.txt)

@@ -929,7 +929,7 @@ class Js extends Controller implements Controller_Interface
                     }
 
                     // async exec
-                    $exec_timing = ($sheet['exec_timing'] && $sheet['exec_timing'] !== $this->exec_timing) ? $sheet['exec_timing'] : false;
+                    $exec_timing = ($script['exec_timing'] && $script['exec_timing'] !== $this->exec_timing) ? $script['exec_timing'] : false;
 
                     // hash type prefix
                     $hash_type_prefix = (isset($hash_type_prefixes[$script['type']])) ? $hash_type_prefixes[$script['type']] : false;
@@ -965,9 +965,9 @@ class Js extends Controller implements Controller_Interface
                         }
                     }
 
-                    // render config
-                    if ($render_timing) {
-                        $async_script[($index + 1)] = $this->timing_config($render_timing);
+                    // exec timing
+                    if ($exec_timing) {
+                        $async_script[($index + 1)] = $this->timing_config($exec_timing);
                     }
 
                     // custom localStorage config
@@ -999,6 +999,9 @@ class Js extends Controller implements Controller_Interface
 
                     $value_set = false;
                     for ($i = count($async_script); $i >= $index; $i--) {
+                        if (!isset($async_script[$i])) {
+                            continue;
+                        }
                         if ($async_script[$i] !== null) {
                             $value_set = true;
                         } else {
@@ -1365,26 +1368,28 @@ class Js extends Controller implements Controller_Interface
                     }
                 }
 
-                // apply custom script filter pre processing
-                $filteredSrc = apply_filters('o10n_script_src_pre', $src, $script['tag']);
+                if ($src) {
+                    // apply custom script filter pre processing
+                    $filteredSrc = apply_filters('o10n_script_src_pre', $src, $script['tag']);
 
-                // ignore script
-                if ($filteredSrc === 'ignore') {
-                    continue 1;
-                }
+                    // ignore script
+                    if ($filteredSrc === 'ignore') {
+                        continue 1;
+                    }
 
-                // delete script
-                if ($filteredSrc === 'delete') {
+                    // delete script
+                    if ($filteredSrc === 'delete') {
 
                     // delete from HTML
-                    $this->output->add_search_replace($script['tag'], '');
-                    continue 1;
-                }
+                        $this->output->add_search_replace($script['tag'], '');
+                        continue 1;
+                    }
 
-                // replace href
-                if ($filteredSrc !== $script['src']) {
-                    $script['src'] = $filteredSrc;
-                    $script['replaceSrc'] = true;
+                    // replace href
+                    if ($filteredSrc !== $script['src']) {
+                        $script['src'] = $filteredSrc;
+                        $script['replaceSrc'] = true;
+                    }
                 }
 
                 // apply script minify filter
