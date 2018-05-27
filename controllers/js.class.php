@@ -1067,7 +1067,7 @@ class Js extends Controller implements Controller_Interface
                 // position in document
                 $position = ($script['load_position'] === 'footer') ? 'footer' : 'critical-css';
 
-                if ($exec_timing && $exec_timing['type'] === 'media' && isset($exec_timing['media'])) {
+                if ($exec_timing && isset($exec_timing['type']) && $exec_timing['type'] === 'media' && isset($exec_timing['media'])) {
                     $media = $exec_timing['media'];
                 } else {
                     $media = false;
