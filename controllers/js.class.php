@@ -82,7 +82,7 @@ class Js extends Controller implements Controller_Interface
     {        // local curl proxy
 
         // disabled
-        if (!$this->env->is_optimization()) {
+        if (!$this->env->enabled('js')) {
             return;
         }
 
@@ -310,7 +310,7 @@ class Js extends Controller implements Controller_Interface
     final public function process_html($HTML)
     {
         // verify if empty
-        if ($HTML === '' || !$this->env->is_optimization()) {
+        if ($HTML === '' || !$this->env->enabled('js')) {
             return $HTML; // no HTML
         }
 
