@@ -722,7 +722,10 @@ class Js extends Controller implements Controller_Interface
                             $source = 'o10n.exec('.json_encode($this->timing_config($script['element']['exec_timing'])).',function(){' . $source . '}';
 
                             if ($debug) {
-                                $group_info = (isset($concat_group_settings[$concat_group]) && isset($concat_group_settings[$concat_group]['group'])) ? $concat_group_settings[$concat_group]['group'] : $concat_group;
+                                $group_info = ($concat_group && isset($concat_group_settings[$concat_group]) && isset($concat_group_settings[$concat_group]['group'])) ? $concat_group_settings[$concat_group]['group'] : $concat_group;
+                                if (!$group_info) {
+                                    $group_info = 'no-group';
+                                }
                                 $group = array(
                                     'src' => (isset($script['inline'])) ? 'inline-' . $script['hash'] : $script['src'],
                                     'concat_group' => $group_info
