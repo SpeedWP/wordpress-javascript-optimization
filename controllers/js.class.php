@@ -323,7 +323,7 @@ class Js extends Controller implements Controller_Interface
         }
 
         // debug modus
-        $debug = (defined('O10N_DEBUG') && O10N_DEBUG);
+        $debug = $this->env->is_debug();
 
         // script urls
         $script_urls = array();
@@ -669,6 +669,10 @@ class Js extends Controller implements Controller_Interface
                         }
 
                         if (isset($script['exec_timing']) && $script['exec_timing']) {
+                    
+                            // add timed exec module
+                            $this->client->load_module('timed-exec');
+
                             switch ($script['exec_timing']['type']) {
                                 case "inview":
                                     if (isset($script['exec_timing']['selector'])) {
@@ -709,47 +713,19 @@ class Js extends Controller implements Controller_Interface
                             continue 1;
                         }
 
-                        if (isset($script['exec_timing']) && $script['exec_timing']) {
-                            switch ($script['exec_timing']['type']) {
-                                case "domReady":
-                                    $source = 'o10n.ready(function(){' . $source . '});';
-                                break;
-                                case "requestAnimationFrame":
-                                    $frame = (isset($script['exec_timing']['frame'])) ? $script['exec_timing']['frame'] : 1;
-                                    $source = 'o10n.raf(function(){' . $source . '},'.$frame.');';
-                                break;
-                                case "requestIdleCallback":
-                                    $timeout = (isset($script['exec_timing']['timeout'])) ? $script['exec_timing']['timeout'] : 'false';
-                                    $setTimeout = (isset($script['exec_timing']['setTimeout'])) ? $script['exec_timing']['setTimeout'] : 'false';
-                                    $source = 'o10n.idle(function(){' . $source . '},'.$timeout.','.$setTimeout.');';
-                                break;
-                                case "inview":
-                                    if (isset($script['exec_timing']['selector'])) {
-                                        $offset = (isset($script['exec_timing']['offset']) && is_numeric($script['exec_timing']['offset'])) ? (string)$script['exec_timing']['offset'] : 'false';
-
-                                        // load inview module
-                                        $this->client->load_module('inview');
-
-                                        $source = 'o10n.inview('.json_encode($script['exec_timing']['selector']).','.$offset.',function(){' . $source . '});';
-                                    }
-
-                                break;
-                                case "media":
-                                    if (isset($script['exec_timing']['media'])) {
-
-                                        // load responsive module
-                                        $this->client->load_module('responsive');
-
-                                        $source = 'o10n.media('.json_encode($script['exec_timing']['media']).',function(){' . $source . '});';
-                                    }
-
-                                break;
-                            }
-                        }
-
                         // wrap in in try {} catch(e) {}
                         if ($concat_trycatch) {
                             $source = 'try{' . $source . '}catch(e){if(console&&console.error){console.error(e);}}';
+                        }
+
+                        if (isset($script['element']['exec_timing']) && $script['element']['exec_timing']) {
+                            $source = 'o10n.exec('.json_encode($this->timing_config($script['element']['exec_timing'])).',function(){' . $source . '}';
+
+                            if ($debug) {
+                                $source .= ',' . json_encode(md5($source)) . ',' . json_encode($concat_group) . ');';
+                            } else {
+                                $source .= ');';
+                            }
                         }
 
                         // concat source config
@@ -1422,6 +1398,24 @@ class Js extends Controller implements Controller_Interface
                             // custom async exec
                             if (isset($asyncConfig['exec_timing'])) {
                                 $script['exec_timing'] = $asyncConfig['exec_timing'];
+
+                                // add timed exec module
+                                $this->client->load_module('timed-exec');
+
+                                switch ($asyncConfig['exec_timing']['type']) {
+                                    case "inview":
+                                        if (isset($asyncConfig['exec_timing']['selector'])) {
+                                            // load inview module
+                                            $this->client->load_module('inview');
+                                        }
+                                    break;
+                                    case "media":
+                                        if (isset($asyncConfig['exec_timing']['selector'])) {
+                                            // load responsive module
+                                            $this->client->load_module('responsive');
+                                        }
+                                    break;
+                                }
                             }
 
                             // custom rel_preload
