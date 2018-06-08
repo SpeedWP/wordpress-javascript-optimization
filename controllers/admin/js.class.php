@@ -145,6 +145,21 @@ class AdminJs extends ModuleAdminController implements Module_Admin_Controller_I
              'display'
          ));
     }
+
+    /**
+     * Return help tab data
+     */
+    final public function help_tab()
+    {
+        $data = array(
+            'name' => __('Javascript Optimization', 'o10n'),
+            'github' => 'https://github.com/o10n-x/wordpress-javascript-optimization',
+            'wordpress' => 'https://wordpress.org/support/plugin/javascript-optimization',
+            'docs' => 'https://github.com/o10n-x/wordpress-javascript-optimization/tree/master/docs'
+        );
+
+        return $data;
+    }
     
     /**
      * Settings link on plugin overview.
@@ -175,9 +190,13 @@ class AdminJs extends ModuleAdminController implements Module_Admin_Controller_I
                 $lgcode = '';
             }
 
-            $row_meta = array(
-                /*'o10n_scores' => '<a href="' . esc_url('https://optimization.team/pro/') . '" target="_blank" title="' . esc_attr(__('View Google PageSpeed Scores Documentation', 'o10n')) . '" style="font-weight:bold;color:black;">' . __('Upgrade to <span class="g100" style="padding:0px 4px;">PRO</span>', 'o10n') . '</a>'*/
-            );
+            $plugin_links = $this->help_tab();
+
+            if ($plugin_links && isset($plugin_links['github'])) {
+                $row_meta = array(
+                    'o10n_version' => '<a href="'.trailingslashit($plugin_links['github']).'releases/" target="_blank" title="' . esc_attr(__('View Version History', 'o10n')) . '" style=""><span class="dashicons dashicons-clock"></span> ' . __('Version History', 'o10n') . '</a>'
+                );
+            }
 
             return array_merge($links, $row_meta);
         }

@@ -31,6 +31,7 @@ class AdminViewJs extends AdminViewBase
     {
         // instantiate controller
         return parent::construct($Core, array(
+            'AdminJs',
             'json',
             'AdminClient',
             'options',
@@ -64,14 +65,7 @@ class AdminViewJs extends AdminViewBase
      */
     final public function help_tab()
     {
-        $data = array(
-            'name' => __('Javascript Optimization', 'o10n'),
-            'github' => 'https://github.com/o10n-x/wordpress-javascript-optimization',
-            'wordpress' => 'https://wordpress.org/support/plugin/javascript-optimization',
-            'docs' => 'https://github.com/o10n-x/wordpress-javascript-optimization/tree/master/docs'
-        );
-
-        return $data;
+        return $this->AdminJs->help_tab();
     }
 
     /**
