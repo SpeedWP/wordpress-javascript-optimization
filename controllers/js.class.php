@@ -724,11 +724,9 @@ class Js extends Controller implements Controller_Interface
                             if ($debug) {
                                 $group_info = (isset($concat_group_settings[$concat_group]) && isset($concat_group_settings[$concat_group]['group'])) ? $concat_group_settings[$concat_group]['group'] : $concat_group;
                                 $group = array(
-                                    'concat_group' => (is_string($group_info)) ? $group_info : $group_info['key']
+                                    'src' => (isset($script['inline'])) ? 'inline-' . $script['hash'] : $script['src'],
+                                    'concat_group' => $group_info
                                 );
-                                if (isset($group_info['title'])) {
-                                    $group['title'] = $group_info['title'];
-                                }
                                 $source .= ',' . json_encode(md5($source)) . ',' . json_encode(array('src' => $group)) . ');';
                             } else {
                                 $source .= ');';
