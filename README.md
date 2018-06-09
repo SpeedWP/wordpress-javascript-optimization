@@ -121,6 +121,8 @@ The plugin provides the option to cache stylesheets using localStorage with a HT
 
 The plugin provides a unique innovation to capture and proxy external script injected scripts to pass the [Leverage browser caching](https://developers.google.com/speed/docs/insights/LeverageBrowserCaching) rule from Google PageSpeed Insights.
 
+The proxy can also be used to remove or modify script injected scripts.
+
 ![Script Proxy](https://github.com/o10n-x/wordpress-javascript-optimization/blob/master/docs/images/proxy.png)
 
 ### Javascript Code Search & Replace
