@@ -63,6 +63,12 @@ add_filter('o10n_js_custom_minify', function ($JS) {
 ```
 </details>
 
+### Grouped Concatenation with Dependencies
+
+The plugin provides advanced concatenation with the ability to configure concat groups with an optional dependency on other concat groups.
+
+![Group Concat](https://github.com/o10n-x/wordpress-javascript-optimization/blob/master/docs/images/group-concat.png)
+
 ### Async loading and timed download and/or execution
 
 The plugin provides many unique innovations including timed script downloading and/or execution based on `requestAnimationFrame` with frame target, `requestIdleCallback`, element scrolled into view or a Media Query.

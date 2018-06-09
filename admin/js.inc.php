@@ -147,7 +147,7 @@ add_filter('o10n_js_custom_minify', function ($JS) {
 </table>
 
 
-<div class="advanced-options" data-ns="js.minify" data-json-advanced="js.minify.closure-compiler-service"<?php $visible('js.minify', ($get('js.minify.minifier') === 'closure-compiler-service')); ?> data-ns-condition="js.minify.minifier==closure-compiler-service">>
+<div class="advanced-options" data-ns="js.minify" data-json-advanced="js.minify.closure-compiler-service"<?php $visible('js.minify', ($get('js.minify.minifier') === 'closure-compiler-service')); ?> data-ns-condition="js.minify.minifier==closure-compiler-service">
 
     <table class="advanced-options-table widefat fixed striped">
         <colgroup><col style="width: 85px;"/><col style="width: 250px;"/><col /></colgroup>
