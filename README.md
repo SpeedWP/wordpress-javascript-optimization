@@ -123,6 +123,12 @@ The plugin provides a unique innovation to capture and proxy external script inj
 
 ![Script Proxy](https://github.com/o10n-x/wordpress-javascript-optimization/blob/master/docs/images/proxy.png)
 
+### Javascript Code Search & Replace
+
+The plugin provides an option to search and replace strings in Javascript code before minification. The configuration supports both strings and regular expression.
+
+![Javascript code search & replace](https://github.com/o10n-x/wordpress-javascript-optimization/blob/master/docs/images/javascript-code-replace.png)
+
 With debug modus enabled, the browser console will show detailed information about the Javascript loading and execution process including a [Performance API](https://developer.mozilla.org/nl/docs/Web/API/Performance) result for an insight in the Javascript loading performance of any given configuration.
 
 ![Browser Console performance debug](https://github.com/o10n-x/wordpress-javascript-optimization/blob/master/docs/images/console-performance.png)
