@@ -315,7 +315,13 @@ class Js extends Controller implements Controller_Interface
         }
 
         // extract <script> elements from HTML
-        $this->extract($HTML);
+        try {
+            $this->extract($HTML);
+        } catch (Exception $e) {
+            return $HTML;
+        } catch (\Exception $e) {
+            return $HTML;
+        }
 
         // no script elements, skip
         if (empty($this->script_elements)) {
