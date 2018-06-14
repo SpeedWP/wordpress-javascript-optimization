@@ -1772,7 +1772,7 @@ class Js extends Controller implements Controller_Interface
             case "closure-compiler-service":
 
                 // load library
-                if (!class_exists('\O10n\ClosureCompilerService')) {
+                if (!class_exists('\O10n\ClosureCompilerService', false)) {
                     require_once $this->core->modules('js')->dir_path() . 'lib/ClosureCompilerService.php';
                 }
                 if (is_null($this->ClosureCompilerService)) {
