@@ -86,6 +86,21 @@ class Js extends Controller implements Controller_Interface
             return;
         }
 
+        // setup on WordPress init hook
+        add_action('init', array($this, 'init_setup'), PHP_INT_MAX);
+    }
+
+    /**
+     * Setup controller on WordPress init
+     */
+    final public function init_setup()
+    {
+        // disabled
+        if (!$this->env->enabled('js')) {
+            return;
+        }
+
+
         // add module definitions
         $this->client->add_module_definitions($this->client_modules, $this->client_module_dependencies);
 
